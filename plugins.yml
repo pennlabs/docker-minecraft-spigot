@@ -1,0 +1,4 @@
+plugins:
+  worldedit:
+    file: SlackMC.jar
+    url: https://github.com/mastercoms/SlackMC/releases/download/v2.0.0-alpha.1/slackmc-2.0.0-SNAPSHOT.jar
