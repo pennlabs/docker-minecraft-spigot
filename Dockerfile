@@ -19,6 +19,8 @@ RUN \
     rm -fR /tmp/tof-buildtools/ || \
     true
 
+COPY plugins/SlackMC/config.yml ${BUILDTOOLS_OUTPUT}/SlackMC/config.yml
+
 # Setting this server to spigot
 ENV TYPE=SPIGOT
 ENV VERSION="1.15.2"
