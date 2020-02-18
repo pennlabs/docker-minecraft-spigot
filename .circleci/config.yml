@@ -6,8 +6,8 @@ workflows:
   build-and-publish:
     jobs:
       - docker/publish:
-          cache_from: "pennlabs/image-name:latest"
-          image: pennlabs/image-name
+          cache_from: "pennlabs/docker-minecraft-spigot:latest"
+          image: pennlabs/docker-minecraft-spigot
           tag: "${CIRCLE_SHA1},latest"
           context: docker-publish
           filters:
