@@ -1,3 +1,4 @@
+data/
 # Docker
 Dockerfile
 .dockerignore

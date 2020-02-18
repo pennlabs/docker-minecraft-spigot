@@ -1,13 +1,26 @@
 FROM itzg/minecraft-server
 LABEL maintainer="Penn Labs"
 
-ARG SLACK_PATH="v2.0.0-alpha.1/slackmc-2.0.0-SNAPSHOT"
+ARG TOF_BUILDTOOLS_VER=1.2.0
+
+ADD https://git.faldoria.de/tof/server/build-tools/-/jobs/artifacts/buildtools-${TOF_BUILDTOOLS_VER}/raw/target/ToF-BuildTools.jar?job=release-artifact /tmp/tof-buildtools/BuildTools.jar
+
+ARG BUILDTOOLS_OUTPUT=/plugins
+COPY plugins.yml /tmp/tof-buildtools/
+RUN \
+    [ -d /tmp/tof-buildtools ] && \
+    [ $(find /tmp/tof-buildtools -type f -name plugins.yml | wc -l) -gt 0 ] && \
+    java -jar /tmp/tof-buildtools/BuildTools.jar \
+    --config "/tmp/tof-buildtools/plugins.yml" \
+    --configs "plugins.yml" \
+    --dir "/tmp/tof-buildtools/" \
+    --output ${BUILDTOOLS_OUTPUT} && \
+    chown -R minecraft:minecraft ${BUILDTOOLS_OUTPUT} && \
+    rm -fR /tmp/tof-buildtools/ || \
+    true
+
+COPY plugins/SlackMC/config.yml ${BUILDTOOLS_OUTPUT}/SlackMC/config.yml
 
 # Setting this server to spigot
 ENV TYPE=SPIGOT
-
-RUN apk update && \
-    apk add --no-cache ca-certificates wget && \
-    update-ca-certificates
-
-RUN wget -P plugins/ https://github.com/mastercoms/SlackMC/releases/download/${SLACK_PATH}.jar
+ENV VERSION="1.15.2"
